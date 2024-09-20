@@ -1,6 +1,6 @@
 {
   "name": "texty",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Texty is a text assistant extension that helps you to write better.",
   "main": "texty.html",
   "scripts": {
