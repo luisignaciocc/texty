@@ -3,8 +3,24 @@
   "name": "Texty",
   "description": "Texty is a text assistant extension that helps you to write better.",
   "version": "1.0",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "background": {
+    "service_worker": "./dist/background.js"
+  },
   "action": {
-    "default_popup": "texty.html",
+    "default_popup": "popup.html",
     "default_icon": "texstatoy.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["./dist/content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
