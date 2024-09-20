@@ -7,22 +7,70 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Text Translator</h1>
-    <div class="form-group">
+    <h1>Texty</h1>
+    <p>
+      Texty is a text reformulation tool that uses OpenAI's gpt-4o-mini model to
+      generate text based on the input text and the selected domain, intent,
+      audience, formality, and language.
+    </p>
+    <div>
+      <label for="apiKey">API Key:</label>
+      <input
+        id="apiKey"
+        type="password"
+        placeholder="Enter your OpenAI API key..."
+      />
+    </div>
+    <div>
       <label for="input">Input Text:</label>
-      <textarea id="input" placeholder="Enter text to translate..."></textarea>
+      <textarea
+        id="input"
+        placeholder="Enter the text to reformulate..."
+      ></textarea>
     </div>
-    <div class="controls">
-      <select id="targetLanguage">
-        <option value="es">Spanish</option>
-        <option value="fr">French</option>
-        <option value="de">German</option>
-        <option value="it">Italian</option>
+    <div>
+      <select id="domain">
+        <option value="general">General</option>
+        <option value="academic">Academic</option>
+        <option value="business">Business</option>
+        <option value="email">Email</option>
+        <option value="casual">Casual</option>
+        <option value="creative">Creative</option>
       </select>
-      <button id="translateBtn">Translate</button>
+      <select id="intent">
+        <option value="inform">Inform</option>
+        <option value="describe">Describe</option>
+        <option value="convince">Convince</option>
+        <option value="tellAStory">Tell A Story</option>
+      </select>
+      <select id="audience">
+        <option value="general">General</option>
+        <option value="knowledgeable">Knowledgeable</option>
+        <option value="expert">Expert</option>
+      </select>
+      <select id="formality">
+        <option value="neutral">Neutral</option>
+        <option value="informal">Informal</option>
+        <option value="formal">Formal</option>
+      </select>
+      <select id="language">
+        <option value="english">English</option>
+        <option value="spanish">Spanish</option>
+        <option value="french">French</option>
+        <option value="german">German</option>
+        <option value="italian">Italian</option>
+        <option value="portuguese">Portuguese</option>
+        <option value="dutch">Dutch</option>
+        <option value="russian">Russian</option>
+        <option value="japanese">Japanese</option>
+        <option value="korean">Korean</option>
+        <option value="chinese">Chinese</option>
+        <option value="arabic">Arabic</option>
+      </select>
+      <button type="submit" id="btn">Go</button>
     </div>
-    <div class="form-group">
-      <label for="output">Translated Text:</label>
+    <div>
+      <label for="output">Generated Text:</label>
       <textarea id="output" readonly></textarea>
     </div>
     <script src="./dist/popup.js"></script>

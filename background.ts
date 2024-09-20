@@ -1,17 +1,8 @@
 let debounceTimeout: NodeJS.Timeout | null = null;
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (msg) => {
   if (typeof msg.text === "string") {
-    chrome.storage.local.set({ saving: true }, () => {
-      if (debounceTimeout) {
-        clearTimeout(debounceTimeout);
-      }
-      debounceTimeout = setTimeout(() => {
-        chrome.storage.local.set({ input: msg }, async () => {
-          chrome.storage.local.set({ saving: false });
-          await chrome.runtime.sendMessage({ refresh: true });
-        });
-      }, 1000);
-    });
+    await chrome.storage.local.set({ input: msg });
+    await chrome.runtime.sendMessage({ refresh: true });
   }
 });
