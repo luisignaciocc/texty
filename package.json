@@ -1,0 +1,11 @@
+{
+  "name": "texty",
+  "version": "1.0.0",
+  "description": "Texty is a text assistant extension that helps you to write better.",
+  "main": "texty.html",
+  "devDependencies": {
+    "chrome-types": "^0.1.306"
+  },
+  "author": "@luisignaciocc",
+  "license": "ISC"
+}
