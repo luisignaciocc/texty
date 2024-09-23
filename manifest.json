@@ -3,7 +3,7 @@
   "name": "Texty",
   "description": "Texty is a text assistant extension that helps you to write better.",
   "version": "0.0.1",
-  "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": ["storage"],
   "background": {
     "service_worker": "./dist/background.js"
   },
