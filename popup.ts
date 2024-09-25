@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const textArea = document.getElementById("input") as HTMLTextAreaElement;
   const inputText = await chrome.storage.local.get("input");
-  textArea.value = inputText.input.text || "";
+  textArea.value = inputText.input?.text || "";
 
   const apiKey = await chrome.storage.sync.get("apiKey");
 
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   chrome.runtime.onMessage.addListener(async (msg) => {
     if (msg.refresh) {
       const inputText = await chrome.storage.local.get("input");
-      textArea.value = inputText.input.text || "";
+      textArea.value = inputText.input?.text || "";
     }
   });
 
