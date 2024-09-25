@@ -3,13 +3,20 @@ function main() {
     const inputObserver = new MutationObserver(async (mutationsList) => {
       const activeElement = document.activeElement as
         | HTMLInputElement
-        | HTMLTextAreaElement;
+        | HTMLTextAreaElement
+        | HTMLDivElement;
       if (
         activeElement &&
         (activeElement.tagName === "INPUT" ||
-          activeElement.tagName === "TEXTAREA")
+          activeElement.tagName === "TEXTAREA" ||
+          (activeElement.tagName === "DIV" && activeElement.isContentEditable))
       ) {
-        const text = activeElement.value;
+        const text =
+          "value" in activeElement
+            ? activeElement.value ||
+              activeElement.innerText ||
+              activeElement.textContent
+            : activeElement.innerText || activeElement.textContent;
         await chrome.runtime.sendMessage({ text });
       }
     });
@@ -17,11 +24,13 @@ function main() {
     const observeActiveElement = () => {
       const activeElement = document.activeElement as
         | HTMLInputElement
-        | HTMLTextAreaElement;
+        | HTMLTextAreaElement
+        | HTMLDivElement;
       if (
         activeElement &&
         (activeElement.tagName === "INPUT" ||
-          activeElement.tagName === "TEXTAREA")
+          activeElement.tagName === "TEXTAREA" ||
+          (activeElement.tagName === "DIV" && activeElement.isContentEditable))
       ) {
         inputObserver.observe(activeElement, {
           attributes: true,

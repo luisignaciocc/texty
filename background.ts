@@ -5,6 +5,8 @@ chrome.runtime.onMessage.addListener(async (msg) => {
     try {
       await chrome.storage.local.set({ input: msg });
       await chrome.runtime.sendMessage({ refresh: true });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 });

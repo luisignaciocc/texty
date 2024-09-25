@@ -85,4 +85,33 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
   });
+
+  const debouncedSaveInputText = (text: string) => {
+    chrome.storage.local.set({ input: { text } });
+  };
+  let timeout: NodeJS.Timeout | null = null;
+  textArea.addEventListener("input", (event) => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+
+    timeout = setTimeout(() => {
+      debouncedSaveInputText(textArea.value);
+    }, 500);
+  });
+
+  const saveApiKey = (apiKey: string) => {
+    chrome.storage.sync.set({ apiKey });
+  };
+  let apiKeyTimeout: NodeJS.Timeout | null = null;
+  const apiKeyInput = document.getElementById("apiKey") as HTMLInputElement;
+  apiKeyInput.addEventListener("input", (event) => {
+    if (apiKeyTimeout) {
+      clearTimeout(apiKeyTimeout);
+    }
+
+    apiKeyTimeout = setTimeout(() => {
+      saveApiKey(apiKeyInput.value);
+    }, 500);
+  });
 });
