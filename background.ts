@@ -10,3 +10,8 @@ chrome.runtime.onMessage.addListener(async (msg) => {
     }
   }
 });
+
+chrome.tabs.onActivated.addListener(async () => {
+  await chrome.storage.local.set({ input: "" });
+  await chrome.runtime.sendMessage({ refresh: true });
+});
