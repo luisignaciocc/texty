@@ -69,8 +69,8 @@ document.addEventListener("DOMContentLoaded", async () => {
               "x-goog-api-key": apiKey,
             },
             body: JSON.stringify({
-              system_instruction: { parts: [{ text: systemPrompt }] },
-              contents: [{ parts: [{ text: userPrompt }] }],
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: "user", parts: [{ text: userPrompt }] }],
               generationConfig: { temperature: 0.7 },
             }),
           }
