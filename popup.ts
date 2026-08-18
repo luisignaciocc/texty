@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const inputText = await chrome.storage.local.get("input");
   textArea.value = inputText.input?.text || "";
 
-  const apiKey = await chrome.storage.sync.get("apiKey");
+  const apiKey = await chrome.storage.local.get("apiKey");
 
   if (apiKey.apiKey) {
     (document.getElementById("apiKey") as HTMLInputElement).value =
@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  document.getElementById("btn").addEventListener("click", async () => {
+  const btn = document.getElementById("btn") as HTMLButtonElement;
+  btn?.addEventListener("click", async () => {
     const apiKey = (document.getElementById("apiKey") as HTMLInputElement)
       ?.value;
     const inputText = (document.getElementById("input") as HTMLTextAreaElement)
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    await chrome.storage.sync.set({ apiKey });
+    await chrome.storage.local.set({ apiKey });
 
     if (!inputText) {
       alert("Please enter some text");
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const systemPrompt =
-      "You are an advanced text assistant using the OpenAI API to reformulate texts. Your task is to generate clear and coherent text based on user specifications, including domain, intent, audience, formality, and language. Ensure you follow the user's instructions and provide useful and creative results. Return only the reformulated text, without any additional information or commentary.";
+      "You are an advanced text assistant using the Gemini API to reformulate texts. Your task is to generate clear and coherent text based on user specifications, including domain, intent, audience, formality, and language. Ensure you follow the user's instructions and provide useful and creative results. Return only the reformulated text, without any additional information or commentary.";
 
     const userPrompt = `
       Reformulate the following text for a ${audience} audience in a ${domain} context, with the intent to ${intent}, in a ${formality} tone, and in ${language}: "${inputText}"
@@ -56,32 +57,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     const output = document.getElementById("output") as HTMLTextAreaElement;
     if (output) {
       output.value = "Loading...";
+      btn.disabled = true;
 
       try {
-        const completion = await fetch(
-          "https://api.openai.com/v1/chat/completions",
+        const response = await fetch(
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${apiKey}`,
+              "x-goog-api-key": apiKey,
             },
             body: JSON.stringify({
-              model: "gpt-4o-mini",
-              messages: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: userPrompt },
-              ],
-              temperature: 0.7,
+              system_instruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ parts: [{ text: userPrompt }] }],
+              generationConfig: { temperature: 0.7 },
             }),
           }
-        ).then((response) => response.json());
+        );
 
-        const reformulatedText =
-          completion?.choices?.[0]?.message?.content?.replace(/^"|"$/g, "");
-        output.value = reformulatedText;
+        const completion = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            completion?.error?.message ||
+              `Request failed with status ${response.status}`
+          );
+        }
+
+        const reformulatedText = completion?.candidates?.[0]?.content
+          ?.parts?.[0]?.text
+          ?.trim()
+          ?.replace(/^"|"$/g, "");
+
+        output.value = reformulatedText || "No response received. Please try again.";
       } catch (error) {
-        output.value = "An error occurred. Please try again.";
+        output.value = `An error occurred: ${
+          error instanceof Error ? error.message : "Please try again."
+        }`;
+      } finally {
+        btn.disabled = false;
       }
     }
   });
@@ -101,7 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   const saveApiKey = (apiKey: string) => {
-    chrome.storage.sync.set({ apiKey });
+    chrome.storage.local.set({ apiKey });
   };
   let apiKeyTimeout: NodeJS.Timeout | null = null;
   const apiKeyInput = document.getElementById("apiKey") as HTMLInputElement;

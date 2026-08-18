@@ -1,11 +1,11 @@
 # Texty
 
-Texty is a text assistant extension designed to help you write better by reformulating text based on user specifications. It utilizes OpenAI's gpt-4o-mini model to generate coherent and contextually appropriate text.
+Texty is a text assistant extension designed to help you write better by reformulating text based on user specifications. It utilizes Google's Gemini 2.5 Flash model to generate coherent and contextually appropriate text.
 
 ## Features
 
 - Text Reformulation: Reformulate text for various domains, intents, audiences, formalities, and languages.
-- Customizable Inputs: Enter your OpenAI API key, input text, and select preferences for domain, intent, audience, formality, and language.
+- Customizable Inputs: Enter your Gemini API key, input text, and select preferences for domain, intent, audience, formality, and language.
 - User-Friendly Interface: Simple and intuitive popup interface for easy interaction.
 
 ## Installation
@@ -19,7 +19,7 @@ Texty is a text assistant extension designed to help you write better by reformu
 ## Usage
 
 1. Click on the Texty extension icon in the toolbar.
-2. Enter your OpenAI API key.
+2. Enter your Gemini API key.
 3. Input the text you want to reformulate.
 4. Select the desired domain, intent, audience, formality, and language.
 5. Click the "Go" button to get the reformulated text.
@@ -34,7 +34,7 @@ Texty is a text assistant extension designed to help you write better by reformu
 
 ## Requirements
 
-- An OpenAI account to obtain an API key.
+- A Google AI Studio account to obtain a Gemini API key.
 
 ## License
 
