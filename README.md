@@ -1,6 +1,6 @@
 # Texty
 
-Texty is a text assistant extension designed to help you write better by reformulating text based on user specifications. It utilizes Google's Gemini 2.5 Flash model to generate coherent and contextually appropriate text.
+Texty is a text assistant extension designed to help you write better by reformulating text based on user specifications. It utilizes Google's Gemini 3.6 Flash model to generate coherent and contextually appropriate text.
 
 ## Features
 
