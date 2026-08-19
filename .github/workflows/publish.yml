@@ -8,6 +8,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: chrome-web-store
     steps:
       - uses: actions/checkout@v4
 
