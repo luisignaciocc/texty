@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Texty",
   "description": "Texty is a text assistant extension that helps you to write better.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "permissions": ["storage"],
   "host_permissions": ["https://generativelanguage.googleapis.com/*"],
   "background": {
