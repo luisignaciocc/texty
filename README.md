@@ -39,12 +39,11 @@ Texty is a text assistant extension designed to help you write better by reformu
 ## CI/CD: Publishing to the Chrome Web Store
 
 `.github/workflows/publish.yml` builds, packages, and publishes a new
-version to the Chrome Web Store whenever `master` is updated (via a
-merged pull request — direct pushes to `master` are blocked by branch
-protection). The publish job targets the `chrome-web-store` GitHub
-Environment, which requires a manual approval click before it runs, so
-a merge alone never sends a version to Google for review — someone
-still has to approve the deployment in the Actions run.
+version to the Chrome Web Store automatically whenever `master` is
+updated (via a merged pull request — direct pushes to `master` are
+blocked by branch protection). No manual approval step is in the way:
+merging a PR that bumps the version in `manifest.json` sends that
+version to Chrome Web Store review right away.
 
 To reuse this pattern in another workflow or repo, you need:
 
@@ -85,7 +84,9 @@ dropped the equivalent `--client-id`/`--client-secret`/`--refresh-token`
 flags in v4, and requires `--publisher-id`/`PUBLISHER_ID` as of the
 same version).
 
-To require manual approval on a new environment like `chrome-web-store`:
+If you'd rather have a manual approval step before a workflow runs
+(e.g. for a riskier deploy), create a GitHub Environment with a
+required reviewer and reference it from the job:
 
 ```bash
 gh api -X PUT repos/OWNER/REPO/environments/ENV_NAME \
@@ -95,9 +96,16 @@ gh api -X PUT repos/OWNER/REPO/environments/ENV_NAME \
   -F 'deployment_branch_policy[custom_branch_policies]=false'
 ```
 
-Then reference it in the job with `environment: ENV_NAME`. Note this
-only works if the branch the job runs on is a **protected branch**
-(see branch protection below).
+```yaml
+jobs:
+  my-job:
+    environment: ENV_NAME
+```
+
+This only works if the branch the job runs on is a **protected
+branch** (see branch protection below). Note that GitHub
+auto-cancels a deployment that sits waiting for approval for 30 days
+(it shows up as a failed run), so don't leave one pending indefinitely.
 
 ## Branch protection
 
